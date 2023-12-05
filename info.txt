@@ -1,0 +1,31 @@
+Ermitteln der Daten:
+32-Bit:
+Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Where-Object { ($_.DisplayName -notlike "*Update*") -and ($_.DisplayName -ne $NULL) } | sort DisplayName
+64-Bit:
+Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Where-Object { ($_.DisplayName -notlike "*Update*") -and ($_.DisplayName -ne $NULL) } | sort DisplayName
+
+
+Notwendige Schritte:
+1)Beide Objektlisten zusammenführen und duplicate entfernen
+
+2) Einige Displaynamen sind sehr lang, zu lang und enthalten unsinnige Informationen, wie:
+   -  (remove only)
+   - Versionsnummer 
+   - überlange Bezeichner
+ Diese Displaynamen müsste man sinnvoll kürzen können, bzw. bestimmte Zeichenketten entfernen. 
+Schön wären auch Ersetzungen mittels Dictionary, wie „Microsoft“ -> „MS“ oder „McAfee Endpoint Security“ -> „McAfee ENS“ oder „Fujitsu Software ServerView“ -> „Fujitsu ServerView“
+
+3) Aufbereitung für CheckMK
+  Die Daten müssen einen String (Variable) gepackt werden, nach folgendem Schema:
+  DisplayName (DisplayVersion), DisplayName (DisplayVersion), ...
+
+
+Informationen:
+Reine Ausgabe für CheckMK
+
+$status $servicename $metrik $outputstring
+
+$status ist integer und kann aus {0, 1, 2, 3} sein. Gewünscht ist hier erstmal nur 0
+$servicename ist ein String ; servicename="WinSoftware"
+$metrik ist ein String; metrik="AnzInstallSoftware=$anz;;;0"  --> $anz ist die Summe installiere Programme
+$outputstring ist ein ordinärer String (Wunschformat siehe Punkt 3. )
