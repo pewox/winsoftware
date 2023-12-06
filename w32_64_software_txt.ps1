@@ -11,7 +11,7 @@ $replace = @{'Microsoft'='MS'
         'Software Development Kit' = 'SDK'
         'AnyConnect Secure Mobility Client'='ACSM Client' 
         'Language Pack'='lang'}
-$output = New-Item '.\out_sw.txt' -force | Out-Null
+$out = New-Item '.\out_sw.txt' -force
 $pfad_s = $pfad | sort -Unique DisplayName
 foreach($val in $pfad_s){
     $name = $val.DisplayName
@@ -20,6 +20,6 @@ foreach($val in $pfad_s){
             $name = $name.replace($key, $replace[$key])
         }
         $name = $name -replace '-? ?v?\d?\.?\d? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''   #   'v?-? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''
-        Add-Content '.\out.txt' -Value ('0 "WinSoftware" - {0} version {1}' -f $name, $version)
+        Add-Content $out -Value ('0 "WinSoftware" - {0} version {1}' -f $name, $version)
     }   
 #$obj | Format-Table
