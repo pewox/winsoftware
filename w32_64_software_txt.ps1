@@ -21,5 +21,4 @@ foreach($val in $pfad_s){
         }
         $name = $name -replace '-? ?v?\d?\.?\d? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''   #   'v?-? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''
         Add-Content $out -Value ('0 "WinSoftware" - {0} version {1}' -f $name, $version)
-    }   
-#$obj | Format-Table
+    }
