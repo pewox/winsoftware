@@ -10,7 +10,7 @@ $replace = @{'Microsoft'='MS'
         'Windows'='Win'
         'AnyConnect Secure Mobility Client'='ACSM Client' 
         'Language Pack'='lang'}
-
+        
 $pfad_s = $pfad | sort -Unique DisplayName
 $obj = foreach($val in $pfad_s){
     $name = $val.DisplayName
@@ -19,7 +19,7 @@ $obj = foreach($val in $pfad_s){
             $name = $name.replace($key, $replace[$key])
         }
             [PSCustomObject]@{
-            Name = $name
+            Name = $name -replace 'v?-? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''
             Version = $version
             }    
     }   
