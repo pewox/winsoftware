@@ -1,0 +1,25 @@
+$pfad1 = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Where-Object { ($_.DisplayName -notlike "*Update*") -and ($_.DisplayName -ne $NULL) } | sort DisplayName
+$pfad2 = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Where-Object { ($_.DisplayName -notlike "*Update*") -and ($_.DisplayName -ne $NULL) } | sort DisplayName
+$pfad = $pfad1 + $pfad2
+$replace = @{'Microsoft'='MS'
+        'Visual'='Vis'
+        'McAfee Endpoint Security'='McAfee ENS' 
+        'Redistributable'='Red'
+        'Additional'='Ad'
+        'Minimum'='Min'
+        'Windows'='Win'
+        'Software Development Kit' = 'SDK'
+        'AnyConnect Secure Mobility Client'='ACSM Client' 
+        'Language Pack'='lang'}
+$output = New-Item '.\out_sw.txt' -force | Out-Null
+$pfad_s = $pfad | sort -Unique DisplayName
+foreach($val in $pfad_s){
+    $name = $val.DisplayName
+    $version = $val.DisplayVersion
+        foreach($key in $replace.Keys){
+            $name = $name.replace($key, $replace[$key])
+        }
+        $name = $name -replace '-? ?v?\d?\.?\d? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''   #   'v?-? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''
+        Add-Content '.\out.txt' -Value ('0 "WinSoftware" - {0} version {1}' -f $name, $version)
+    }   
+#$obj | Format-Table
