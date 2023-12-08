@@ -19,6 +19,6 @@ foreach($val in $pfad_s){
         foreach($key in $replace.Keys){
             $name = $name.replace($key, $replace[$key])
         }
-        $name = $name -replace '-? ?v?\d?\.?\d? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''   #   'v?-? ?([^a-z]\d{1,})+\.?([^a-z]\d{1,})+', ''
+        $name = $name -replace '\-{0,1}\s{0,1}[v]{0,1}\s{0,1}\.{0,1}\d+\.(\d+\.\d+)?(\d+\.\d+)?(\.{0,1}\d+)?' , ''
         Add-Content $out -Value ('0 "WinSoftware" - {0} version {1}' -f $name, $version)
 }
