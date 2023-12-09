@@ -19,7 +19,7 @@ $obj = foreach($val in $pfad_s){
             $name = $name.replace($key, $replace[$key])
         }
             [PSCustomObject]@{
-            Name = $name -replace '\-?\s?[v]?\s?(\d{1,}\.)+(\d{1,})?([-+]\d{1,})?', ''
+            Name = $name -replace '\-?\s?[v]?\s?(\d{1,}\.)+\d{1,}([-+]\d{1,})?', ''
             Version = $version
             }    
     }   
